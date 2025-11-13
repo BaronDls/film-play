@@ -48,7 +48,10 @@ Permite realizar operaciones **CRUD** sobre entidades relacionadas como *Media*,
 film-play/
 ├── backend/ # Servidor API (Express + Mongoose)
 │ ├── index.js # Configuración principal y rutas
+│ ├── controllers # Peticiones y respuestas
 │ ├── models/ # Modelos Mongoose
+│ ├── routes/ # rutas
+│ ├── Middleware # Comunicación de datos y validaciones 
 │ └── .env.example # Variables de entorno del backend
 │
 ├── frontend/ # Cliente (React + Vite)
@@ -56,6 +59,7 @@ film-play/
 │ │ ├── api/ # Llamadas a la API (usa VITE_API_URL)
 │ │ ├── components/ # Componentes reutilizables
 │ │ ├── pages/ # Vistas (MediaLayout, Login, NotFound, etc.)
+│ │ └── App.jsx # Rutas (Router DOM)
 │ │ └── main.jsx
 │ └── .env.example # Variables de entorno del frontend
 │
