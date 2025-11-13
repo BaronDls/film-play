@@ -19,7 +19,7 @@ const validateProducer = [
 ];
 
 router.get("/", producerController.getAllProducers);
-router.post("/",requireRole, validateProducer, producerController.createProducer);
+router.post("/",requireRole("admin"), validateProducer, producerController.createProducer);
 router.put("/:id", validateProducer, producerController.updateProducer);
 router.delete("/:id",producerController.deleteProducer); 
 

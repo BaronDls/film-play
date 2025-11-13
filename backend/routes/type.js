@@ -20,7 +20,7 @@ const validateType = [
 ];
 
 router.get("/", TypeController.getAllTypes);
-router.post("/", requireRole , validateType, TypeController.createType);
+router.post("/", requireRole("admin") , validateType, TypeController.createType);
 router.put("/:id", validateType, TypeController.updateType);
 router.delete("/:id", TypeController.deleteType);
 

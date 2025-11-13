@@ -18,7 +18,7 @@ const validateDirector = [
 ];
 
 router.get("/", directorController.getAllDirectors);
-router.post("/", requireRole, validateDirector, directorController.createDirector);
+router.post("/", requireRole("admin"), validateDirector, directorController.createDirector);
 router.put("/:id", validateDirector, directorController.updateDirector);
 router.delete("/:id", directorController.deleteDirector); 
 

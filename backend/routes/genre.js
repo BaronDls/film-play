@@ -18,7 +18,7 @@ const validateGenre = [
 
 const router = express.Router();
 router.get("/", genreController.getAllGenres);
-router.post("/",requireRole, validateGenre, genreController.createGenre);
+router.post("/",requireRole("admin"), validateGenre, genreController.createGenre);
 router.put("/:id", validateGenre, genreController.updateGenre);
 router.delete("/:id", genreController.deleteGenre);
 
