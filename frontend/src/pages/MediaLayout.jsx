@@ -49,6 +49,7 @@ const MediaLayout = () => {
                 className="h-70 w-40 overflow-hidden"
               >
                 <img
+                   onClick={() => navigate(`/media/${media._id}`)}
                   className="hover:scale-110 transition-transform duration-200  object-contain h-60   rounded-lg  "
                   src={media.photo}
                   alt="imagen"
