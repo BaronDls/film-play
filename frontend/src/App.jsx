@@ -7,6 +7,7 @@ import Type from "./pages/Type";
 import Navbar from "./components/NavBar";
 import Medialayout from "./pages/MediaLayout";
 import { MediaDetails } from "./components/MediaDetails";
+import NoFound from "./pages/NoFound";
 
 const App = () => {
   return (
@@ -22,6 +23,8 @@ const App = () => {
           <Route path="/genre" element={<Genre></Genre>} />
           <Route path="/producer" element={<Producer></Producer>} />
           <Route path="/type" element={<Type></Type>} />
+          <Route path="/" element={<Medialayout/>} />
+          <Route path="*" element={<NoFound/>} />
         </Routes>
       </div>
     </BrowserRouter>
