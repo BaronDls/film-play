@@ -1,4 +1,4 @@
-# 🎬 Film Play — Frontend
+# 🎬 Film Play 
 ![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-6.2.1-646CFF?logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38BDF8?logo=tailwindcss&logoColor=white)
@@ -77,13 +77,12 @@ cd backend
 npm install
 npm run dev
 ```
-### **2.Fronend**
+### **3.Fronend**
 ```
 cd ../frontend
 npm install
-npm run devx  
+npm run dev
 ```
 
-#React #Vite #TailwindCSS #Axios #Express #NodeJS #MongoDB #Mongoose #JWT #Authentication #Fullstack #SPA #ViteReact #FilmApp
 
 
