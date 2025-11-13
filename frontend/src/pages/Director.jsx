@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import { directorRequest, directorList, directorDelete, directorUpdate } from "../api/director";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -16,7 +15,8 @@ const Director = () => {
 
   const getDirectors = async () => {
     const res = await directorList();
-    setDirectors(res.data);
+    const listDirectors = Array.isArray(res.data) ? res.data : [];
+    setDirectors(listDirectors);
   };
 
   useEffect(() => {

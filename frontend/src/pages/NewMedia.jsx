@@ -51,10 +51,10 @@ const NewMedia = () => {
       ]);
 
       setlist({
-        genre: genre.data,
-        producer: producer.data,
-        director: director.data,
-        type: type.data,
+        genre: Array.isArray(genre.data) ? genre.data : [],
+        producer: Array.isArray(producer.data) ? producer.data : [],
+        director: Array.isArray(director.data) ? director.data : [],
+        type: Array.isArray(type.data) ? type.data : [],
       });
     };
     fetchData();

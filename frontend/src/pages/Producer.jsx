@@ -16,7 +16,8 @@ const Producer = () => {
   const getProducers = async () => {
     try {
       const res = await producerList();
-      setProducers(res.data);
+      const listProducers = Array.isArray(res.data) ? res.data : [];
+      setProducers(listProducers);
     } catch (error) {
       console.error("Error fetching producers:", error);
     }

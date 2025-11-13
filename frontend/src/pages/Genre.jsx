@@ -12,7 +12,8 @@ const Genre = () => {
   const [isEditingGenre, setIsEditingGenre] = useState(null);
   const getGenres = async () => {
     const res = await genreList();
-    setGenres(res.data);
+    const listGenres = Array.isArray(res.data) ? res.data : [];
+    setGenres(listGenres);
   };
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import { typeRequest, typeList, typeDelete, typeUpdate } from "../api/type";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -15,7 +14,8 @@ const Type = () => {
 
   const getTypes = async () => {
     const res = await typeList();
-    setTypes(res.data);
+    const listTypes = Array.isArray(res.data) ? res.data : [];
+    setTypes(listTypes);
   };
 
   useEffect(() => {
