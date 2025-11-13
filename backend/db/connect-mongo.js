@@ -5,7 +5,7 @@ const getConnetion = async () => {
 
   try {
     const url =
-      `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@filmplay.ss8kduu.mongodb.net/?appName=FilmPlay`
+      `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@filmplay.ss8kduu.mongodb.net/movies?appName=FilmPlay`
 
     await mongoose.connect(url);
     console.log("Connected to MongoDB");
