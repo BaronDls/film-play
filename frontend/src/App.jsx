@@ -8,6 +8,7 @@ import Navbar from "./components/NavBar";
 import Medialayout from "./pages/MediaLayout";
 import { MediaDetails } from "./components/MediaDetails";
 import NoFound from "./pages/NoFound";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/type" element={<Type></Type>} />
           <Route path="/" element={<Medialayout/>} />
           <Route path="*" element={<NoFound/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </div>
     </BrowserRouter>
