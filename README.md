@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ## 📖 Descripción
 **Film Play** es una **Single Page Application (SPA)** desarrollada para gestionar y visualizar películas (medias).  
-Permite realizar operaciones **CRUD** sobre entidades relacionadas como *Directores*, *Productores*, *Géneros* y *Tipos*, además de contar con **autenticación de usuarios mediante JWT**.
+Permite realizar operaciones **CRUD** sobre entidades relacionadas como *Media*, *Directores*, *Productores*, *Géneros* y *Tipos*, además de contar con **autenticación de usuarios mediante JWT**.
 
 ---
 
@@ -79,7 +79,7 @@ npm run dev
 ```
 ### **3.Fronend**
 ```
-cd ../frontend
+cd frontend
 npm install
 npm run dev
 ```
