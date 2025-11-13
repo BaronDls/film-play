@@ -1,4 +1,4 @@
-import axios from "axios"; // peticiones al igual que fetch
+import axios from "axios"; 
 
 
 const API = import.meta.env.VITE_API_URL;
