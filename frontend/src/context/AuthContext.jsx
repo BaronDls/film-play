@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 const API = import.meta.env.VITE_API_URL;
 
@@ -11,31 +11,48 @@ export const AuthProvider = ({ children }) => {
 
   const setTokenHeader = (token) => {
     if (token) {
-      localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
     }
   };
 
-  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+    
+    if (token) {
+      setTokenHeader(token);
+      if (userData) {
+        try {
+          setUser(JSON.parse(userData));
+        } catch (err) {
+          setUser(null);
+        }
+      }
+    }
+
+    setLoading(false);
+  }, []);
+
   const login = async (email, password) => {
     setLoading(true);
 
     try {
       const res = await axios.post(`${API}user/login`, { email, password });
-      const token = res?.data?.token || res?.data?.accessToken || null;
-      if (!token) {
-        setLoading(false);
-        throw new Error("No se recibió token");
-      }
+      const token = res?.data?.token || res?.data?.accessToken;
+      if (!token) throw new Error("No se recibió token");
+      const userInfo = res.data.user;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userInfo));
+
       setTokenHeader(token);
-      setUser(res.data.user || null);
+      setUser(userInfo);
+
     } catch (err) {
       setUser(null);
       throw new Error(err?.response?.data?.message || "Error al iniciar sesión");
-    }finally {
+    } finally {
       setLoading(false);
     }
   };

@@ -25,7 +25,7 @@ const App = () => {
       <div className="h-screen flex flex-col bg-primary-default text-colortext-default font-lexend">
         <Routes>
           <Route
-            element={<ProtectedRoute user={user} redirectPath={"/login"} />}
+            element={<ProtectedRoute  redirectPath={"/login"} />}
           >
             <Route path="/media" element={<Medialayout />} />
             <Route path="/media/:id" element={<MediaDetails />} />
