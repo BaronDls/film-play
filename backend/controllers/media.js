@@ -1,65 +1,53 @@
-import Media from "../models/Media.js";
-import crypto from "crypto";
+import mediaService from  "../services/media.service.js";
 
 class MediaController {
   async getMedia(req, res) {
     try {
-      const media = await Media.find()
-        .populate("Genre", "name")
-        .populate("Type", "name")
-        .populate("Director", "name")
-        .populate("Producer", "name");
+      const media = await mediaService.getAll();
       res.status(200).json(media);
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).json({ error: "Failed to fetch media" });
     }
   }
 
   async createMedia(req, res) {
     try {
-      const generateUrl = (title) => {
-        return title
-          .toLowerCase() 
-          .replace(/\s+/g, "-") 
-          .replace(/[^a-z0-9-]/g, ""); 
-      }
-
-      const url = generateUrl(req.body.title);
-      const serial = crypto.randomUUID();
-      const newMedia = new Media({ ...req.body,serial,url });
-      await newMedia.save();
-      res.status(200).json(newMedia);
+      const media = await mediaService.create(req.body);
+      res.status(201).json(media);
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).json({ error: "Failed to create media" });
     }
   }
+
   async updateMedia(req, res) {
     try {
       const { id } = req.params;
-      const updatedMedia = await Media.findByIdAndUpdate(
-        id,
-        { ...req.body },
-        { new: true }
-      )
-        .populate("Genre", "name")
-        .populate("Type", "name")
-        .populate("Director", "name")
-        .populate("Producer", "name");
-      if (!updatedMedia) {
-        return res.status(404).send("Media not found");
+
+      const updated = await mediaService.update(id, req.body);
+
+      if (!updated) {
+        return res.status(404).json({ message: "Media not found" });
       }
-      res.status(201).json(updatedMedia);
+
+      res.status(200).json(updated);
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).json({ error: "Failed to update media" });
     }
   }
+
   async deleteMedia(req, res) {
-    const { id } = req.params;
-    await Media.findByIdAndDelete(id);
     try {
+      const { id } = req.params;
+
+      const deleted = await mediaService.delete(id);
+
+      if (!deleted) {
+        return res.status(404).json({ message: "Media not found" });
+      }
+
       res.status(200).json({ message: "Media deleted" });
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).json({ error: "Failed to delete media" });
     }
   }
 }
