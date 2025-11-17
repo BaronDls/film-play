@@ -1,9 +1,10 @@
-import Genre from "../models/Genre.js";
+import genreService from '../services/genre.service.js';
 
-class genreController {
+class GenreController {
+
   async getAllGenres(req, res) {
     try {
-      const genres = await Genre.find();
+      const genres = await genreService.getAll();
       res.status(200).json(genres);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -12,42 +13,44 @@ class genreController {
 
   async createGenre(req, res) {
     try {
-      const { name, state, description } = req.body;
-      const newGenre = new Genre({ name, state, description });
-      await newGenre.save();
-      res.status(200).json(newGenre);
+      const newGenre = await genreService.create(req.body);
+      res.status(201).json(newGenre);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
+
   async updateGenre(req, res) {
     const { id } = req.params;
-    const genre = req.body;
-    const { name, state, description } = genre;
     try {
-      const updatedGenre = await Genre.findByIdAndUpdate(
-        id,
-        { name, state, description, dateUpdated: Date().now },
-        { new: true }
-      );
-      if (!updatedGenre)
+      const updatedGenre = await genreService.update(id, req.body);
+
+      if (!updatedGenre) {
         return res.status(404).json({ message: "Genre not found" });
+      }
+
       res.status(200).json(updatedGenre);
+
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
+
   async deleteGenre(req, res) {
     const { id } = req.params;
     try {
-      const deletedGenre = await Genre.findByIdAndDelete(id);
-      if (!deletedGenre)
+      const deletedGenre = await genreService.delete(id);
+
+      if (!deletedGenre) {
         return res.status(404).json({ message: "Genre not found" });
-      res.status(204).json({ message: "Genre deleted" });
+      }
+
+      res.status(200).json({ message: "Genre deleted successfully" });
+
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
 }
 
-export default new genreController();
+export default new GenreController();
