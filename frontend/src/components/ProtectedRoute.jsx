@@ -3,7 +3,7 @@ import Navbar from "./NavBar";
 
 const ProtectedRoute = ({ user, redirectPath }) => {
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={redirectPath} replace />;
   }
   return (
     <>

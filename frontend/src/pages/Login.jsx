@@ -1,8 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const API = import.meta.env.VITE_API_URL
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,18 +8,16 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      const res = await axios.post(`${API}user/login`, { email, password });
-      // Ajusta según la respuesta real de tu backend (token, user, etc.)
-      const token = res?.data?.token || res?.data?.accessToken || null;
-      if (token) localStorage.setItem("token", token);
+      await login(email, password);
       setLoading(false);
-      navigate("/");
+      navigate("/media");
     } catch (err) {
       setLoading(false);
       setError(
@@ -79,7 +75,14 @@ export default function Login() {
         </button>
 
         <p className="mt-4 text-sm opacity-80 text-center">
-          ¿Sin cuenta? <button type="button" onClick={() => navigate("/register")} className="underline">Registrarse</button>
+          ¿Sin cuenta?{" "}
+          <button
+            type="button"
+            onClick={() => navigate("/register")}
+            className="underline"
+          >
+            Registrarse
+          </button>
         </p>
       </form>
     </div>

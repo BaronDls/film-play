@@ -9,13 +9,24 @@ import { MediaDetails } from "./components/MediaDetails";
 import NoFound from "./pages/NoFound";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuth } from "./context/AuthContext";
 
 const App = () => {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-primary-default px-4">
+        <div className="text-white text-lg">Cargando...</div>
+      </div>
+    );
+  }
   return (
     <BrowserRouter>
       <div className="h-screen flex flex-col bg-primary-default text-colortext-default font-lexend">
         <Routes>
-          <Route element={<ProtectedRoute />}>
+          <Route
+            element={<ProtectedRoute user={user} redirectPath={"/login"} />}
+          >
             <Route path="/media" element={<Medialayout />} />
             <Route path="/media/:id" element={<MediaDetails />} />
             <Route path="/editMedia/:id" element={<NewMedia />} />
@@ -33,5 +44,6 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
 
 export default App;
