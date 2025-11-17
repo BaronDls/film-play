@@ -1,53 +1,53 @@
-import Type from "../models/Type.js";
+import typeService from "../services/type.service.js";
 
-class TypeController { // <-- Cambia a PascalCase (mayúscula inicial)
+class TypeController {
   async getAllTypes(req, res) {
     try {
-      const types = await Type.find();
-      res.status(200).json(types);
+      const types = await typeService.getAll();
+      return res.status(200).json(types);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
 
   async createType(req, res) {
     try {
-      const { name, description } = req.body;
-      const newType = new Type({ name, description });
-      await newType.save();
-      res.status(201).json(newType);
+      const type = await typeService.create(req.body);
+      return res.status(201).json(type);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
   }
 
   async updateType(req, res) {
-    const { id } = req.params;
     try {
-      const updatedType = await Type.findByIdAndUpdate(
-        id,
-        { name: req.body.name, description: req.body.description, dateUpdated: new Date() },
-        { new: true }
-      );
-      if (!updatedType) return res.status(404).json({ message: "Type not found" });
+      const { id } = req.params;
+      const updated = await typeService.update(id, req.body);
 
-      res.status(200).json(updatedType);
+      if (!updated) {
+        return res.status(404).json({ message: "Type not found" });
+      }
+
+      return res.status(200).json(updated);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
   }
 
   async deleteType(req, res) {
-    const { id } = req.params;
     try {
-      const deletedType = await Type.findByIdAndDelete(id);
-      if (!deletedType) return res.status(404).json({ message: "Tipo no encontrado" });
+      const { id } = req.params;
+      const deleted = await typeService.delete(id);
 
-      res.status(200).json({ message: "Tipo eliminado correctamente" });
+      if (!deleted) {
+        return res.status(404).json({ message: "Type not found" });
+      }
+
+      return res.status(200).json({ message: "Type deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
   }
 }
 
-export default new TypeController(); // <-- Exporta con la nueva clase en mayúscula
+export default new TypeController();

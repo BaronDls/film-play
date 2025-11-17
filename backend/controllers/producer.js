@@ -1,48 +1,33 @@
-import Producer from "../models/Producer.js";
+import producerService from "../services/producer.service.js";
 
 class ProducerController {
   async getAllProducers(req, res) {
     try {
-      const producers = await Producer.find();
+      const producers = await producerService.getAll();
       return res.status(200).json(producers);
     } catch (error) {
-      console.error("Error fetching producers:", error);
-      return res.status(500).json({ message: "Error fetching producers", error: error.message });
+      return res.status(500).json({
+        message: "Error fetching producers",
+        error: error.message,
+      });
     }
   }
 
   async createProducer(req, res) {
     try {
-      const { name, state, slogan, description } = req.body;
-
-      if (!name || !state || !slogan || !description) {
-        return res.status(400).json({ message: "All fields are required" });
-      }
-
-      const newProducer = new Producer({ name, state, slogan, description });
-      await newProducer.save();
-
-      return res.status(201).json(newProducer);
+      const producer = await producerService.create(req.body);
+      return res.status(201).json(producer);
     } catch (error) {
-      console.error("Error creating producer:", error);
-      return res.status(500).json({ message: "Error creating producer", error: error.message });
+      return res.status(400).json({
+        message: error.message || "Error creating producer",
+      });
     }
   }
 
   async updateProducer(req, res) {
-    const { id } = req.params;
-    const { name, state, slogan, description } = req.body;
-
     try {
-      if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(400).json({ message: "Invalid ID format" });
-      }
-
-      const updatedProducer = await Producer.findByIdAndUpdate(
-        id,
-        { name, state, slogan, description },
-        { new: true, runValidators: true }
-      );
+      const { id } = req.params;
+      const updatedProducer = await producerService.update(id, req.body);
 
       if (!updatedProducer) {
         return res.status(404).json({ message: "Producer not found" });
@@ -50,30 +35,28 @@ class ProducerController {
 
       return res.status(200).json(updatedProducer);
     } catch (error) {
-      console.error("Error updating producer:", error);
-      return res.status(500).json({ message: "Error updating producer", error: error.message });
+      return res.status(400).json({
+        message: error.message || "Error updating producer",
+      });
     }
   }
 
   async deleteProducer(req, res) {
-    const { id } = req.params;
     try {
-      if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-        return res.status(400).json({ message: "Invalid ID format" });
-      }
+      const { id } = req.params;
+      const deletedProducer = await producerService.delete(id);
 
-      const deletedProducer = await Producer.findByIdAndDelete(id);
       if (!deletedProducer) {
         return res.status(404).json({ message: "Producer not found" });
       }
 
       return res.status(200).json({ message: "Producer deleted successfully" });
     } catch (error) {
-      console.error("Error deleting producer:", error);
-      return res.status(500).json({ message: "Error deleting producer", error: error.message });
+      return res.status(400).json({
+        message: error.message || "Error deleting producer",
+      });
     }
   }
 }
-
 
 export default new ProducerController();
