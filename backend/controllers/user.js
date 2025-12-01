@@ -36,6 +36,7 @@ class userController {
     try {
       const { id } = req.params;
       const deleted = await userService.delete(id);
+      console.log(deleted);
       if (!deleted) return res.status(404).json({ message: "Usuario no encontrado" });
       res.status(200).json({ message: "Usuario eliminado correctamente" });
     } catch (error) {

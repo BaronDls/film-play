@@ -15,7 +15,7 @@ export default function AdminUsers() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API}users`, { headers: getAuthHeader() });
+      const res = await axios.get(`${API}user/`, { headers: getAuthHeader() });
       setUsers(res.data);
     } catch (err) {
       toast.error(err?.response?.data?.message || "Error al obtener usuarios");
@@ -31,7 +31,7 @@ export default function AdminUsers() {
   const handleDelete = async (id) => {
     if (!confirm("¿Eliminar usuario?")) return;
     try {
-      await axios.delete(`${API}users/${id}`, { headers: getAuthHeader() });
+      await axios.delete(`${API}user/${id}`, { headers: getAuthHeader() });
       toast.success("Usuario eliminado");
       setUsers((u) => u.filter((x) => x._id !== id));
     } catch (err) {
@@ -43,7 +43,7 @@ export default function AdminUsers() {
     const newRole = user.role === "user" ? "administrador" : "user";
     try {
       const res = await axios.patch(
-        `${API}users/${user._id}/role`,
+        `${API}user/${user._id}/role`,
         { role: newRole },
         { headers: { "Content-Type": "application/json", ...getAuthHeader() } }
       );

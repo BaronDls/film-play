@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/genre" element={<Genre></Genre>} />
             <Route path="/producer" element={<Producer></Producer>} />
             <Route path="/type" element={<Type></Type>} />
-            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/user-managment" element={<AdminUsers />} />
             <Route path="/" element={<Medialayout />} />
           </Route>
           {/* Rutas públicas */}
