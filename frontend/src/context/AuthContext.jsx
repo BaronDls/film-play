@@ -7,7 +7,8 @@ const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // inicializar en true para que ProtectedRoute espere la comprobación al recargar
+  const [loading, setLoading] = useState(true);
 
   const setTokenHeader = (token) => {
     if (token) {
@@ -18,26 +19,39 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
-    
-    if (token) {
-      setTokenHeader(token);
-      if (userData) {
-        try {
-          setUser(JSON.parse(userData));
-        } catch (err) {
+    const init = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const userData = localStorage.getItem("user");
+
+        if (token) {
+          setTokenHeader(token);
+          if (userData) {
+            try {
+              setUser(JSON.parse(userData));
+            } catch (err) {
+              localStorage.removeItem("user");
+              setUser(null);
+            }
+          } else {
+            setUser(null);
+          }
+        } else {
           setUser(null);
         }
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
-    setLoading(false);
+    init();
   }, []);
 
   const login = async (email, password) => {
     setLoading(true);
-
     try {
       const res = await axios.post(`${API}user/login`, { email, password });
       const token = res?.data?.token || res?.data?.accessToken;
@@ -48,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
       setTokenHeader(token);
       setUser(userInfo);
-
+      return userInfo;
     } catch (err) {
       setUser(null);
       throw new Error(err?.response?.data?.message || "Error al iniciar sesión");
@@ -58,6 +72,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setTokenHeader(null);
     setUser(null);
   };
