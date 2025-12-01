@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken";
 class userController {
   async createUser(req, res) {
     try {
-      const { name, email, password, role } = req.body;
+      const { name, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ name, email, password: hashedPassword, role });
+      const newUser = new User({ name, email, password: hashedPassword, role: "user" });
       await newUser.save();
       res.status(201).json({ message: "Usuario creado correctamente" });
     } catch (error) {
