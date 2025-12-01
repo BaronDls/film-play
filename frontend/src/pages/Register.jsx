@@ -1,52 +1,46 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, Toaster } from "sonner";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
     setLoading(true);
     try {
-      await axios.post("/api/users/register", {
+      await axios.post(`${API}user/register`, {
         name,
         email,
         password,
       });
 
       setLoading(false);
-      navigate("/login");
+      toast.success("Usuario registrado correctamente");
     } catch (err) {
       setLoading(false);
-      setError(
+      const message =
         err?.response?.data?.message ||
-          err?.response?.data ||
-          "Error al registrar usuario"
-      );
+        err?.response?.data ||
+        "Error al registrar usuario";
+      toast.error(message);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-primary-default px-4">
+      <Toaster />
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-primary-dark bg-opacity-20 p-8 rounded-lg text-white"
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Crear cuenta</h2>
-
-        {error && (
-          <div className="mb-4 text-sm text-red-300 bg-red-900 bg-opacity-20 p-2 rounded">
-            {error}
-          </div>
-        )}
 
         <label className="block mb-3">
           <span className="text-sm opacity-80">Nombre</span>
