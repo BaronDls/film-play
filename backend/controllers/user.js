@@ -1,41 +1,59 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import userService from "../services/user.service.js";
 
 class userController {
   async createUser(req, res) {
     try {
       const { name, email, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ name, email, password: hashedPassword, role: "user" });
-      await newUser.save();
+      await userService.createUser({ name, email, password });
       res.status(201).json({ message: "Usuario creado correctamente" });
     } catch (error) {
-      res.status(500).json({ message: "Erro al crear el Usuario" });
+      res.status(500).json({ message: "Error al crear el Usuario" });
     }
   }
 
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email });
-      if (!user) return res.status(401).json({ message: "Credenciales inválidas" });
-
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) return res.status(401).json({ message: "Credenciales inválidas" });
-
-      const token = jwt.sign(
-        { id: user._id, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-
-      res.status(200).json({ token, user: { id: user._id, name: user.name, role: user.role } });
+      const result = await userService.login({ email, password });
+      if (!result) return res.status(401).json({ message: "Credenciales inválidas" });
+      res.status(200).json(result);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
 
+  // admin endpoints
+  async getUsers(req, res) {
+    try {
+      const users = await userService.getAll();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  async deleteUser(req, res) {
+    try {
+      const { id } = req.params;
+      const deleted = await userService.delete(id);
+      if (!deleted) return res.status(404).json({ message: "Usuario no encontrado" });
+      res.status(200).json({ message: "Usuario eliminado correctamente" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  async changeUserRole(req, res) {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      const updated = await userService.changeRole(id, role);
+      if (!updated) return res.status(404).json({ message: "Usuario no encontrado" });
+      res.status(200).json(updated);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export default new userController();

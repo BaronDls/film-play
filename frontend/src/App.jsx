@@ -10,6 +10,7 @@ import NoFound from "./pages/NoFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminUsers from "./pages/AdminUsers";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
       <div className="h-screen flex flex-col bg-primary-default text-colortext-default font-lexend">
         <Routes>
           <Route
-            element={<ProtectedRoute redirectPath={"/login"} />}
+            element={<ProtectedRoute redirectPath={"/register"} />}
           >
             <Route path="/media" element={<Medialayout />} />
             <Route path="/media/:id" element={<MediaDetails />} />
@@ -27,8 +28,10 @@ const App = () => {
             <Route path="/genre" element={<Genre></Genre>} />
             <Route path="/producer" element={<Producer></Producer>} />
             <Route path="/type" element={<Type></Type>} />
+            <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/" element={<Medialayout />} />
           </Route>
+          {/* Rutas públicas */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NoFound />} />

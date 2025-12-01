@@ -5,7 +5,7 @@ import { toast } from "sonner";
 const API = import.meta.env.VITE_API_URL;
 export const directorRequest = async (director) => {
     try {
-        return await axios.post(`${API}director`, director, {headers:{Authorization: `Bearer ${localStorage.getItem("token")}`}});
+        return await axios.post(`${API}director`, director, {headers:{Authorization: `Bearer ${localStorage.getItem("token")}`}});  
     } catch (error) {
         if (error.response.data.message === "Acceso denegado") {
             toast.error("Access denied. Admins only.");

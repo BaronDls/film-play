@@ -23,6 +23,9 @@ export default function Register() {
 
       setLoading(false);
       toast.success("Usuario registrado correctamente");
+      setName("");
+      setEmail("");
+      setPassword("");
     } catch (err) {
       setLoading(false);
       const message =
