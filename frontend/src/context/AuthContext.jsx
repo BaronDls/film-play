@@ -7,7 +7,6 @@ const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // inicializar en true para que ProtectedRoute espere la comprobación al recargar
   const [loading, setLoading] = useState(true);
 
   const setTokenHeader = (token) => {

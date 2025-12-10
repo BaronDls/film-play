@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { mediaList } from "../api/media";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaArrowLeft} from "react-icons/fa6";
-
+import { IoMdClose } from "react-icons/io";
 export const MediaDetails = () => {
   const [medias, setMedias] = useState([]);
   const { id } = useParams();
@@ -17,14 +16,14 @@ export const MediaDetails = () => {
   }, []);
   return (
     <div className="flex justify-center items-center relative  h-screen overflow-auto p-6">
-      <FaArrowLeft onClick={() => navigate("/media")} className="absolute top-20 left-80 text-2xl cursor-pointer text-gray-400"/>
       {medias.map(
         (media) =>
           media._id === id && (
             <div
               key={media._id}
-              className="bg-gray-800 text-white shadow-lg rounded-lg p-6 w-full max-w-3xl"
+              className="bg-gray-800 text-white shadow-lg rounded-lg p-6 w-full max-w-3xl relative"
             >
+              <IoMdClose onClick={() => navigate("/media")} className="absolute top-0 right-0 m-3 text-2xl cursor-pointer text-gray-400"/>
               <div className="flex flex-row gap-6">
                 <img
                   src={media.photo}
