@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminUsers from "./pages/AdminUsers";
+import Payment from "./pages/Payment";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/producer" element={<Producer></Producer>} />
             <Route path="/type" element={<Type></Type>} />
             <Route path="/user-managment" element={<AdminUsers />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/" element={<Medialayout />} />
           </Route>
           {/* Rutas públicas */}

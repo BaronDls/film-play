@@ -27,7 +27,7 @@ const validateMedia = [
 ];
 
 router.get("/", MediaController.getMedia);
-router.post("/", requireRole("administrador"), validateMedia, MediaController.createMedia);
+router.post("/", requireRole("admin"), validateMedia, MediaController.createMedia);
 router.put("/:id", validateMedia, MediaController.updateMedia);
 router.delete("/:id", MediaController.deleteMedia);
 
